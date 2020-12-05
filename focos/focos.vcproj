@@ -85,6 +85,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="&quot;$(ProjectDir)..\tools\version.bat&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -217,6 +218,10 @@
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
+			>
+		</File>
+		<File
+			RelativePath="..\tools\version.txt"
 			>
 		</File>
 	</Files>
