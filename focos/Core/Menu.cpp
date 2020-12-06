@@ -1,14 +1,24 @@
 #include "StdAfx.h"
 #include "Menu.h"
 
+/**
+ * The class destruct.
+ *
+ * @return void
+ */
 Menu::Menu(void)
 {
-    menu_x = 25;
-    menu_y = 36;
+    menu_x = 90;
+    menu_y = 0;
 
     setupConsole();
 }
 
+/**
+ * Function to setup the screen.
+ *
+ * @return void
+ */
 Menu::~Menu(void)
 {
 }
@@ -21,39 +31,45 @@ Menu::~Menu(void)
 byte Menu::menuConsole(void)
 {
     // control of menu
-    byte ctrMenu = 40; 
+    byte ctrMenu = menu_y + 4; 
     byte GameOptions;
 
+    loadLevel("./rooms/demo.txt");
     drawMenu("MENU        " , "Load room   " , "Solve       " , "About       " , "Quit        ");
 
-    gotoXY(28,ctrMenu);
+    gotoXY(menu_x + 3, ctrMenu);
     cout << "*";
 
     while(ctrMenu > 0) {
         Sleep(100);
 
         // Checks witch place the spot is on
-        if (selectOption(4, ctrMenu) == K_ENTER) {
-            switch (ctrMenu){                    
-                case 40:
-                    //todo: load a room
-                break;
-
-                case 41:
-                    //todo: solve the puzzle
-                break;
-
-                case 42:
-                    //todo: show the about
-                break;
-
-                case 43:
-                    GameOptions = 0;
-                    ctrMenu = 0;
-                break;
-            }
-
+        if (selectOption(4, ctrMenu) != K_ENTER) {
+            continue;
         }
+
+        // Load room
+        if (ctrMenu == menu_y + 4) {
+            continue;
+        }
+
+        // Solve
+        if (ctrMenu == menu_y + 5) {
+            continue;
+        }
+
+        // About
+        if (ctrMenu == menu_y + 6) {
+            continue;
+        }
+
+        // Quit
+        if (ctrMenu == menu_y + 7) {
+            GameOptions = 0;
+            ctrMenu = 0;
+            continue;
+        }
+
     }
 
     return GameOptions;
@@ -103,9 +119,9 @@ void Menu::drawMenu(char *title, char *option_1, char *option_2, char *option_3,
 byte Menu::selectOption(byte numOptions, byte &ctrMenu)
 {
     byte tempKey = isKey();
-    numOptions = 39 + numOptions;
+    numOptions = menu_y + 3 + numOptions;
 
-    if(tempKey == K_UP && ctrMenu > 40) {
+    if(tempKey == K_UP && ctrMenu > menu_y + 4) {
         moveSpot(ctrMenu, -1);
         return tempKey;
     }
@@ -126,24 +142,11 @@ byte Menu::selectOption(byte numOptions, byte &ctrMenu)
  */
 void Menu::moveSpot(byte &ctrMenu, byte count)
 {
-    gotoXY(28, ctrMenu);
+    gotoXY(menu_x + 3, ctrMenu);
     cout << " ";
     ctrMenu = ctrMenu + count;
-    gotoXY(28, ctrMenu);
+    gotoXY(menu_x + 3, ctrMenu);
     cout << "*";
-}
-
-/**
- * Function to set the cursor Coord.
- *
- * @param char x
- * @param char y
- * @return void
- */
-void Menu::gotoXY(char x, char y)
-{
-    COORD position = {x, y};
-    SetConsoleCursorPosition(wHnd, position);
 }
 
 /**

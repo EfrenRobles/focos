@@ -1,7 +1,7 @@
 #pragma once
-#include "Thread.h"
+#include "File.h"
 
-class Menu : public Thread
+class Menu : public File
 {
 
 public:
@@ -18,7 +18,6 @@ private:
     void drawMenu(char *title, char *option_1, char *option_2, char *option_3, char *option_4);
     byte selectOption(byte numOptions, byte &ctrMenu);
     void moveSpot(byte &ctrMenu, byte count);
-    void gotoXY(char x, char y);
     byte isKey(void);
 
 };
