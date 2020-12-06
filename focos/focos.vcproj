@@ -172,7 +172,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\core\Core.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\core\File.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\focos.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Menu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Room.cpp"
 				>
 			</File>
 			<File
@@ -195,6 +211,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\core\Thread.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -202,11 +222,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\core\Core.h"
+				>
+			</File>
+			<File
+				RelativePath=".\core\File.h"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Menu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Room.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Thread.h"
 				>
 			</File>
 		</Filter>
@@ -217,7 +257,7 @@
 			>
 		</Filter>
 		<File
-			RelativePath=".\ReadMe.txt"
+			RelativePath="..\README.md"
 			>
 		</File>
 		<File
