@@ -1,7 +1,7 @@
 #pragma once
-#include "Core.h"
+#include "Puzzle.h"
 
-class Thread : public Core
+class Thread : public Puzzle
 {
 
 public:

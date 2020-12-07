@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\core\Puzzle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\core\Room.cpp"
 				>
 			</File>
@@ -231,6 +235,10 @@
 			</File>
 			<File
 				RelativePath=".\core\Menu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\core\Puzzle.h"
 				>
 			</File>
 			<File

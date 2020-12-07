@@ -9,6 +9,7 @@
 Core::Core(void)
 {
     scale = 3;
+    resetRoom();
 	console_title = TEXT("Foco App");
 }
 
@@ -123,6 +124,7 @@ void Core::paintDot(byte x, byte y, byte w, byte h, byte co)
  */
 void Core::drawRoom(void)
 {
+    Sleep(500);
 	byte w = (room_x + 1) * scale;
 	byte h = (room_y + 2) * scale;
 	paintDot(0, 0, w + scale -1, h + scale -1, DBLUE);
@@ -143,10 +145,71 @@ void Core::drawRoom(void)
                     doDot(x, y, DWHITE);
                 break;
 
+                case DRED:
+                    doDot(x, y, DRED);
+                break;
+
                 default:
                     doDot(x, y, BLACK);
                 break;
             }
+        }
+    }
+    countSpaceInDarkness();
+}
+
+/**
+ * Function to reset the room.
+ *
+ * @return void
+ */
+void Core::resetRoom(void)
+{
+    for (byte y = 0; y <= ROOM_Y; y ++) {
+        for (byte x = 0; x < ROOM_X; x ++) {
+            room[x][y] = DGREEN;
+        }
+    }
+}
+
+/**
+ * Function to copy the room.
+ *
+ * @param char room_a[ROOM_X][ROOM_Y]
+ * @param char room_b[ROOM_X][ROOM_Y]
+ * @return void
+ */
+void Core::copyMatrix(char room_a[ROOM_X][ROOM_Y], char room_b[ROOM_X][ROOM_Y])
+{
+    for (byte y = 0; y <= ROOM_Y; y ++) {
+        for (byte x = 0; x < ROOM_X; x ++) {
+            room_b[x][y] = room_a[x][y];
+        }
+    }
+}
+
+/**
+ * Function to copy the room.
+ *
+ * @param char room_a[ROOM_X][ROOM_Y]
+ * @param char room_b[ROOM_X][ROOM_Y]
+ * @return void
+ */
+void Core::countSpaceInDarkness(void)
+{
+    spaces_in_darkness = 0;
+    spaces_with_bulbs = 0;
+
+    for (byte x = 0; x < room_x; x ++) {
+        for (byte y = 0; y <= room_y; y ++) {
+            if (room[x][y] == ROOM_GROUND) {
+                spaces_in_darkness ++;
+            }
+
+            if (room[x][y] == ROOM_BULB) {
+                spaces_with_bulbs ++;
+            }
+            
         }
     }
 }

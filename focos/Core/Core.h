@@ -18,7 +18,6 @@ public:
 	~Core(void);
 
 protected:
-
     enum CONSOLE {
         CONSOLE_X   = 120, // value max for the screen
         CONSOLE_Y   = 51   // value max for the screen
@@ -72,15 +71,20 @@ protected:
     byte room_x;
 	byte room_y;
     byte scale;
-    byte offset;
+    byte spaces_in_darkness;
+    byte spaces_with_bulbs;
+
 
 	void setupConsole(void);
+    void copyMatrix(char room_a[ROOM_X][ROOM_Y], char room_b[ROOM_X][ROOM_Y]);
+
     void gotoXY(char x, char y);
 
     void doDot(byte x, byte y, COLORES co);
     void paintDot(byte x, byte y, byte w, byte h, byte co);
     void drawRoom(void);
+    void resetRoom(void);
+    void countSpaceInDarkness(void);
 
 private:
-
 };
