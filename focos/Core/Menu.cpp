@@ -27,52 +27,106 @@ Menu::~Menu(void)
  */
 void Menu::menuConsole(void)
 {
-    byte menu_x = 90;
-    byte menu_y = 0;
+    byte ctr_menu = MENU_Y + 4;
 
-    // control of menu
-    byte ctrMenu = menu_y + 4;
-
-    drawMenu(menu_x, menu_y, "MENU        " , "Load room   " , "Solve       " , "About       " , "Quit        ");
-    gotoXY(menu_x + 3, ctrMenu);
-    cout << "*";
-
+    printMainMenu(ctr_menu);
     loadLevel("./rooms/demo.txt");
-    printResults(menu_x, menu_y);
+    printResults();
 
-    while(ctrMenu > 0) {
+    while(ctr_menu > 0) {
         Sleep(50);
 
         // Checks witch place the spot is on
-        if (selectOption(menu_x, menu_y, 4, ctrMenu) != K_ENTER) {
+        if (selectOption(4, ctr_menu) != K_ENTER) {
             continue;
         }
 
         // Load room
-        if (ctrMenu == menu_y + 4) {
-            loadLevel("./rooms/demoe.txt");
+        if (ctr_menu == MENU_Y + 4) {
+            menuLoadFile();
             continue;
         }
 
         // Solve
-        if (ctrMenu == menu_y + 5) {
-            loadLevel("./rooms/demoe.txt");
-            resolve_step_1();
-            printResults(menu_x, menu_y);
+        if (ctr_menu == MENU_Y + 5) {
+            solvePuzzle();
+            printResults();
             continue;
         }
 
         // About
-        if (ctrMenu == menu_y + 6) {
+        if (ctr_menu == MENU_Y + 6) {
+            printAbout();
             continue;
         }
 
         // Quit
-        if (ctrMenu == menu_y + 7) {
-            ctrMenu = 0;
+        if (ctr_menu == MENU_Y + 7) {
+            ctr_menu = 0;
+        }
+    }
+}
+
+/**
+ * Function to show and handle the load file menu.
+ *
+ * @return byte
+ */
+void Menu::menuLoadFile(void)
+{
+    byte ctr_menu = MENU_Y + 4;
+
+    drawMenu(MENU_X, MENU_Y, "LOAD FILE   " , "Slot 1      " , "Slot 2      " , "Slot 3      " , "Slot 4      ");
+    gotoXY(MENU_X + 3, ctr_menu);
+    cout << "*";
+    
+    while(ctr_menu > 0) {
+        Sleep(50);
+
+        // Checks witch place the spot is on
+        byte key_press = selectOption(4, ctr_menu);
+
+        if (key_press == K_ESC) {
+            ctr_menu = MENU_Y + 4;
+            printMainMenu(ctr_menu);
+            return;
         }
 
+        if (key_press != K_ENTER) {
+            continue;
+        }
+
+        // Load slot 1
+        if (ctr_menu == MENU_Y + 4) {
+	        paintDot(0, 0, CONSOLE_X - 1, CONSOLE_Y - 1, BLACK);
+            loadLevel("./rooms/slot_1.txt");
+            ctr_menu = 0;
+        }
+
+        // Load slot 2
+        if (ctr_menu == MENU_Y + 5) {
+	        paintDot(0, 0, CONSOLE_X - 1, CONSOLE_Y - 1, BLACK);
+            loadLevel("./rooms/slot_2.txt");
+            ctr_menu = 0;
+        }
+
+        // Load slot 3
+        if (ctr_menu == MENU_Y + 6) {
+	        paintDot(0, 0, CONSOLE_X - 1, CONSOLE_Y - 1, BLACK);
+            loadLevel("./rooms/slot_3.txt");
+            ctr_menu = 0;
+        }
+
+        // Load slot 4
+        if (ctr_menu == MENU_Y + 7) {
+	        paintDot(0, 0, CONSOLE_X - 1, CONSOLE_Y - 1, BLACK);
+            loadLevel("./rooms/slot_4.txt");
+            ctr_menu = 0;
+        }
     }
+
+    ctr_menu = MENU_Y + 4;
+    printMainMenu(ctr_menu);
 }
 
 /**
@@ -119,15 +173,26 @@ void Menu::drawMenu(
 }
 
 /**
- * Function to print the puzzle result.
+ * Function to print the main menu.
  *
- * @param byte menu_x
- * @param byte menu_y
+ * @param byte &ctr_menu
  * @return void
  */
-void Menu::printResults(byte menu_x, byte menu_y)
+void Menu::printMainMenu(byte &ctr_menu)
 {
-    drawMenu(menu_x, menu_y + 10, "RESULT      " , "Total Bulbs " , "            ", "Total Dark  " , "            ");
+    drawMenu(MENU_X, MENU_Y, "MENU        " , "Load room   " , "Solve       " , "About       " , "Quit        ");
+    gotoXY(MENU_X + 3, ctr_menu);
+    cout << "*";
+}
+
+/**
+ * Function to print the puzzle result.
+ *
+ * @return void
+ */
+void Menu::printResults(void)
+{
+    drawMenu(MENU_X, MENU_Y + 10, "RESULT      " , "Total Bulbs " , "            ", "Total Dark  " , "            ");
 
     char buffer_bulbs[12];
     _itoa_s(spaces_with_bulbs, buffer_bulbs, 10);
@@ -135,36 +200,65 @@ void Menu::printResults(byte menu_x, byte menu_y)
     char buffer_dark[12];
     _itoa_s(spaces_in_darkness, buffer_dark, 10);
 
-    gotoXY(menu_x + 5, menu_y + 15);
+    gotoXY(MENU_X + 5, MENU_Y + 15);
     cout << buffer_bulbs;
-    gotoXY(menu_x + 5, menu_y + 17);
+    gotoXY(MENU_X + 5, MENU_Y + 17);
     cout << buffer_dark;
+}
+
+/**
+ * Function to print the puzzle result.
+ *
+ * @return void
+ */
+void Menu::printAbout(void)
+{
+    byte menu_y = 23;
+
+    gotoXY(MENU_X, menu_y++);
+    cout << "\311\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\273";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 Distribucion de focos    \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 Beta v0.1.445            \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272                          \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 Por:                     \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 Efren Robles             \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272                          \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 email:                   \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\272 efren_robles@hotmail.com \272";
+    gotoXY(MENU_X, menu_y++);
+    cout << "\310\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\315\274";
 }
 
 /**
  * Function to select an option from  the menu.
  *
- * @param byte menu_x
- * @param byte menu_y
  * @param byte numOptions
- * @param byte &ctrMenu
+ * @param byte &ctr_menu
  * @return byte
  */
-byte Menu::selectOption(byte menu_x, byte menu_y, byte numOptions, byte &ctrMenu)
+byte Menu::selectOption(byte numOptions, byte &ctr_menu)
 {
-    byte tempKey = isKey();
-    numOptions = menu_y + 3 + numOptions;
+    byte temp_key = isKey();
+    numOptions = MENU_Y + 3 + numOptions;
 
-    if(tempKey == K_UP && ctrMenu > menu_y + 4) {
-        moveSpot(menu_x, menu_y, ctrMenu, -1);
-        return tempKey;
+    if(temp_key == K_UP && ctr_menu > MENU_Y + 4) {
+        moveSpot(MENU_X, MENU_Y, ctr_menu, -1);
+        return temp_key;
     }
 
-    if(tempKey == K_DOWN && ctrMenu < numOptions) {
-        moveSpot(menu_x, menu_y, ctrMenu, 1);
+    if(temp_key == K_DOWN && ctr_menu < numOptions) {
+        moveSpot(MENU_X, MENU_Y, ctr_menu, 1);
     }
 
-    return tempKey;
+    return temp_key;
 }
 
 /**
@@ -172,45 +266,15 @@ byte Menu::selectOption(byte menu_x, byte menu_y, byte numOptions, byte &ctrMenu
  *
  * @param byte menu_x
  * @param byte menu_y
- * @param byte &ctrMenu
+ * @param byte &ctr_menu
  * @param byte count
  * @return void
  */
-void Menu::moveSpot(byte menu_x,byte menu_y, byte &ctrMenu, byte count)
+void Menu::moveSpot(byte menu_x, byte menu_y, byte &ctr_menu, byte count)
 {
-    gotoXY(menu_x + 3, ctrMenu);
+    gotoXY(menu_x + 3, ctr_menu);
     cout << " ";
-    ctrMenu = ctrMenu + count;
-    gotoXY(menu_x + 3, ctrMenu);
+    ctr_menu = ctr_menu + count;
+    gotoXY(menu_x + 3, ctr_menu);
     cout << "*";
-}
-
-/**
- * Function to get the input from user using the keyboard.
- *
- * @return byte
- */
-byte Menu::isKey(void)
-{
-	DWORD Events;
-    DWORD EventsRead = 0;
-
-    // Events that can be read from the console
-    GetNumberOfConsoleInputEvents(rHnd, &Events);
-
-    if (Events != 0) {
-		INPUT_RECORD *InRec = new INPUT_RECORD[Events];
-		ReadConsoleInput(rHnd, InRec, Events, &EventsRead);
-
-        if (InRec[0].EventType == KEY_EVENT){
-            if(InRec[0].Event.KeyEvent.bKeyDown == 1) {
-				EventsRead = InRec[0].Event.KeyEvent.wVirtualKeyCode;
-            }
-		}
-
-        delete[] InRec;
-	}
-    
-    FlushConsoleInputBuffer(rHnd);
-	return (byte)EventsRead;
 }

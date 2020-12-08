@@ -47,13 +47,16 @@ void File::loadLevel(char *load_room)
             }
 
             room_x = 0;
-        } else {
-            room[room_x][room_y] = c;
-            if (room_x < ROOM_X) {
-                room_x ++;
-            }
+            continue;
+        } 
+
+        room[room_x][room_y] = c;
+        if (room_x < ROOM_X) {
+            room_x ++;
         }
     }
 
+    // to avoid <= or -1 in conditionals
+    room_y ++;
     drawRoom();
 }

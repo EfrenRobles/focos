@@ -19,23 +19,73 @@ Puzzle::~Puzzle(void)
 {
 }
 
-
 /**
- * Function to apply the first logic to resolve the puzzle.
- *
+ * Fuction to initialize the puzzle class object  
+ *   
+ * @param HANDLE w
+ * @param HANDLE r
+ * @param byte x
+ * @param byte y
+ * @param char puzzle_room[ROOM_X][ROOM_Y]
  * @return void
  */
-void Puzzle::resolve_step_1(void)
+void Puzzle::initPuzzle(HANDLE w, HANDLE r, byte x, byte y, char puzzle_room[ROOM_X][ROOM_Y])
 {
-    while (true) {
-        step_1();
+    w_hnd = w;
+    r_hnd = r;
+    room_x = x;
+    room_y = y;
+    copyMatrix(puzzle_room, room);
+}
+
+/**
+ * Function to return the room matrix
+ * 
+ * @return char puzzle_room[ROOM_X][ROOM_Y]
+ */
+char(&Puzzle::getRoom(void))[ROOM_X][ROOM_Y]
+{
+    return room;
+}
+
+/**
+ * Function to return the numbers of bulbs
+ * 
+ * @return void
+ */
+byte Puzzle::getBulb(void)
+{
+    return spaces_with_bulbs;
+}
+
+/**
+ * Function to return the number of dark places
+ * 
+ * @return void
+ */
+byte Puzzle::getDark(void)
+{
+    return spaces_in_darkness;
+}
+
+/**
+ * Function to apply the logic to resolve the puzzle.
+ *
+ * @param byte option
+ * @return void
+ */
+void Puzzle::resolveStep(byte option)
+{
+    byte i = 0;
+
+    while (i < 11) {
+        logicSelector(option);
         drawRoom();
 
         if (spaces_in_darkness < 2) {
             break;
         }
 
-        copyMatrix(room, puzzle_room);
         step_2();
         drawRoom();
 
@@ -49,23 +99,172 @@ void Puzzle::resolve_step_1(void)
         if (spaces_in_darkness < 2) {
             break;
         }
+
+        i ++;
     }
     
     step_4();
+    step_3();
     drawRoom();
 }
 
-#pragma region Step 1 ---------------------------------------------------
+/**
+ * Function to select the logic to resolve the puzzle.
+ *
+ * @param byte option
+ * @return void
+ */
+void Puzzle::logicSelector(byte option)
+{
+    switch (option) {
+        case 1:
+            step_a();
+        break;
+        case 2:
+            step_b();
+        break;
+        case 3:
+            step_c();
+        break;
+        case 4:
+            step_d();
+        break;
+        case 5:
+            step_e();
+        break;
+        case 6:
+            step_f();
+        break;
+        case 7:
+            step_g();
+        break;
+        case 8:
+            step_h();
+        break;
+    }
+}
 
 /**
- * Function to apply the first logic to resolve the puzzle.
+ * Function to apply the first logic to resolve the puzzle. ->v
  *
  * @return void
  */
-void Puzzle::step_1(void)
+void Puzzle::step_a(void)
 {
-    for (byte y = 0; y <= room_y; y ++) {
-        for (byte x = 0; x < room_x; x ++) {
+    for (char y = 0; y < room_y; y ++) {
+        for (char x = 0; x < room_x; x ++) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Second logic to resolve the puzzle. v<--
+ *
+ * @return void
+ */
+void Puzzle::step_b(void)
+{
+    for (char x = room_x - 1; x > -1; x --) {
+        for (char y = 0; y < room_y; y ++) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Third logic to resolve the puzzle. <-^
+ *
+ * @return void
+ */
+void Puzzle::step_c(void)
+{
+    for (char y = room_y - 1; y > -1; y --) {
+        for (char x = room_x - 1; x > -1; x --) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Fourth logic to resolve the puzzle. ^->
+ *
+ * @return void
+ */
+void Puzzle::step_d(void)
+{
+    for (char x = 0; x < room_x; x ++) {
+        for (char y = room_y - 1; y > -1; y --) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Fifth logic to resolve the puzzle. <--v
+ *
+ * @return void
+ */
+void Puzzle::step_e(void)
+{
+    for (char y = 0; y < room_y; y ++) {
+        for (char x = room_x - 1; x > -1; x --) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Sixth logic to resolve the puzzle. v->
+ *
+ * @return void
+ */
+void Puzzle::step_f(void)
+{
+    for (char x = 0; x < room_x; x ++) {
+        for (char y = 0; y < room_y; y ++) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Seventh logic to resolve the puzzle. ->^
+ *
+ * @return void
+ */
+void Puzzle::step_g(void)
+{
+    for (char y = room_y - 1; y > -1; y --) {
+        for (char x = 0; x < room_x; x ++) {
+            if (room[x][y] == ROOM_GROUND) {
+                seekSome(x, y);
+            }
+        }
+    }
+}
+
+/**
+ * Function to apply the Eighth logic to resolve the puzzle. ^<--
+ *
+ * @return void
+ */
+void Puzzle::step_h(void)
+{
+    for (char x = room_x - 1; x > -1; x --) {
+        for (char y = room_y - 1; y > -1; y --) {
             if (room[x][y] == ROOM_GROUND) {
                 seekSome(x, y);
             }
@@ -84,10 +283,10 @@ void Puzzle::seekSome(byte x, byte y)
 {
     byte number_ways = 0;
 
-    number_ways = seekXPlus(x, y, number_ways);  // ->
-    number_ways = seekXMinus(x, y, number_ways); // <-
-    number_ways = seekYPlus(x, y, number_ways);  // ¡
-    number_ways = seekYMinus(x, y, number_ways); // !
+    number_ways = seekXPlus(x, y, number_ways);  // >
+    number_ways = seekXMinus(x, y, number_ways); // <
+    number_ways = seekYPlus(x, y, number_ways);  // ^
+    number_ways = seekYMinus(x, y, number_ways); // v
 
     if (number_ways > 1) {
         room[x][y] = ROOM_BULB;
@@ -106,7 +305,7 @@ void Puzzle::seekSome(byte x, byte y)
  */
 byte Puzzle::seekXPlus(byte x, byte y, byte number_ways)
 {
-    for (char ground_x = x + 1; ground_x <= room_x; ground_x ++) {
+    for (char ground_x = x + 1; ground_x < room_x; ground_x ++) {
 
         if (room[ground_x][y] == ROOM_WALL) {
             break;
@@ -120,7 +319,6 @@ byte Puzzle::seekXPlus(byte x, byte y, byte number_ways)
 
     return number_ways;
 }
-
 
 /**
  * Function to check the dark places in the left of the bulb.
@@ -156,7 +354,7 @@ byte Puzzle::seekXMinus(byte x, byte y, byte number_ways)
  */
 byte Puzzle::seekYPlus(byte x, byte y, byte number_ways)
 {
-    for (char ground_y = y + 1; ground_y <= room_y; ground_y ++) {
+    for (char ground_y = y + 1; ground_y < room_y; ground_y ++) {
 
         if (room[x][ground_y] == ROOM_WALL) {
             break;
@@ -195,7 +393,6 @@ byte Puzzle::seekYMinus(byte x, byte y, byte number_ways)
 
     return number_ways;
 }
-#pragma endregion
 
 /**
  * Function to check if the dark place and the bulb would be exchanged.
@@ -204,7 +401,9 @@ byte Puzzle::seekYMinus(byte x, byte y, byte number_ways)
  */
 void Puzzle::step_2(void)
 {
-    for (byte y = 0; y <= room_y; y ++) {
+    copyMatrix(room, puzzle_room);
+
+    for (byte y = 0; y < room_y; y ++) {
         for (byte x = 0; x < room_x; x ++) {
             if (puzzle_room[x][y] == ROOM_GROUND) {
                 seekBulb(x, y);
@@ -222,19 +421,19 @@ void Puzzle::step_2(void)
  */
 void Puzzle::seekBulb(byte x, byte y)
 {
-    if (isBulb(x - 1, y - 1, x, y)) { // ¡ <--
+    if (isBulb(x - 1, y - 1, x, y)) { // ^ <
         return;
     }
 
-    if (isBulb(x + 1, y - 1, x ,y)) { // ¡ -->
+    if (isBulb(x + 1, y - 1, x ,y)) { // ^ >
         return;
     }
 
-    if (isBulb(x - 1, y + 1, x ,y)) { // ! <--
+    if (isBulb(x - 1, y + 1, x ,y)) { // v <
         return;
     }
 
-    if (isBulb(x + 1, y + 1, x, y)) { // ! -->
+    if (isBulb(x + 1, y + 1, x, y)) { // v >
         return;
     }
 }
@@ -278,7 +477,6 @@ bool Puzzle::isBulb(char seek_x, char seek_y, char x, char y)
     return false;
 }
 
-
 /**
  * Function to illuminate the dark places
  *
@@ -286,7 +484,7 @@ bool Puzzle::isBulb(char seek_x, char seek_y, char x, char y)
  */
 void Puzzle::step_3(void)
 {
-    for (byte y = 0; y <= room_y; y ++) {
+    for (byte y = 0; y < room_y; y ++) {
         for (byte x = 0; x < room_x; x ++) {
             if (room[x][y] == ROOM_BULB) {
                 setBulb(x, y, ROOM_LIGHT);
@@ -302,7 +500,7 @@ void Puzzle::step_3(void)
  */
 void Puzzle::step_4(void)
 {
-    for (byte y = 0; y <= room_y; y ++) {
+    for (byte y = 0; y < room_y; y ++) {
         for (byte x = 0; x < room_x; x ++) {
             if (room[x][y] == ROOM_GROUND) {
                 room[x][y] = ROOM_BULB;
@@ -323,7 +521,7 @@ void Puzzle::step_4(void)
  */
 void Puzzle::setBulb(byte x, byte y, ROOM ground)
 {
-    for (char bulb_y = y + 1; bulb_y <= room_y; bulb_y ++) {
+    for (char bulb_y = y + 1; bulb_y < room_y; bulb_y ++) {
         if (room[x][bulb_y] == ROOM_WALL) {
             break;
         }
@@ -340,7 +538,7 @@ void Puzzle::setBulb(byte x, byte y, ROOM ground)
     }
 
 
-    for (char bulb_x = x + 1; bulb_x <= room_x; bulb_x ++) {
+    for (char bulb_x = x + 1; bulb_x < room_x; bulb_x ++) {
         if (room[bulb_x][y] == ROOM_WALL) {
             break;
         }

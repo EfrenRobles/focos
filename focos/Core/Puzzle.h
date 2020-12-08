@@ -8,13 +8,30 @@ public:
     Puzzle(void);
     ~Puzzle(void);
 
+    void resolveStep(byte option);
+    void initPuzzle(HANDLE w, HANDLE r, byte x, byte y, char puzzle_room[ROOM_X][ROOM_Y]);
+    char(&Puzzle::getRoom(void))[ROOM_X][ROOM_Y];
+    byte getBulb(void);
+    byte getDark(void);
+
 protected:
-    void resolve_step_1(void);
 
 private:
     char puzzle_room[ROOM_X][ROOM_Y];
 
-    void step_1(void);
+    void logicSelector(byte option);
+
+    void step_a(void);
+    void step_b(void);
+    void step_c(void);
+    void step_d(void);
+
+    void step_e(void);
+    void step_f(void);
+    void step_g(void);
+    void step_h(void);
+
+
     void seekSome(byte x, byte y);
     byte seekXPlus(byte x, byte y, byte number_ways);
     byte seekXMinus(byte x, byte y, byte number_ways);

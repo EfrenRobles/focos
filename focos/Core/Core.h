@@ -30,7 +30,7 @@ protected:
         ROOM_LIGHT  = '3', // value for the bulb's light
 
         ROOM_X      = 90,  // value max for the room
-        ROOM_Y      = 50  // value max for the room
+        ROOM_Y      = 50   // value max for the room
     };
 
     //Colors on the room
@@ -61,9 +61,8 @@ protected:
         K_DOWN	= 40,
     };
 
-
-    HANDLE wHnd; // Handle to write console.
-	HANDLE rHnd; // Handle to read console.
+    HANDLE w_hnd; // Handle to write console.
+	HANDLE r_hnd; // Handle to read console.
 
 	LPCWSTR console_title;
 
@@ -76,6 +75,8 @@ protected:
 
 
 	void setupConsole(void);
+    byte isKey(void);
+
     void copyMatrix(char room_a[ROOM_X][ROOM_Y], char room_b[ROOM_X][ROOM_Y]);
 
     void gotoXY(char x, char y);
@@ -87,4 +88,6 @@ protected:
     void countSpaceInDarkness(void);
 
 private:
+    void autoScale(void);
+
 };

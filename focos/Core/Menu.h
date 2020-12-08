@@ -12,8 +12,11 @@ protected:
     void menuConsole(void);
 
 private:
-    //byte menu_x;
-    //byte menu_y;
+
+    enum MENU {
+        MENU_X = 92,
+        MENU_Y = 0,
+    };
 
     void drawMenu(
         byte menu_x,
@@ -25,10 +28,13 @@ private:
         char *option_4
     );
 
-    void printResults(byte menu_x, byte menu_y);
+    void menuLoadFile(void);
 
-    byte selectOption(byte menu_x, byte menu_y, byte numOptions, byte &ctrMenu);
+    void printMainMenu(byte &ctr_menu);
+    void printResults();
+    void printAbout(void);
+
+    byte selectOption(byte numOptions, byte &ctrMenu);
     void moveSpot(byte menu_x,byte menu_y, byte &ctrMenu, byte count);
-    byte isKey(void);
 
 };
